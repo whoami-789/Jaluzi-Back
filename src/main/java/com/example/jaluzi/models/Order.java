@@ -6,6 +6,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Table(name = "orders")
 @Data
@@ -21,4 +24,7 @@ public class Order {
     private int total;
     private int deposit;
     private int reminder;
+
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
+    private List<Sizes> sizes = new ArrayList<>();
 }

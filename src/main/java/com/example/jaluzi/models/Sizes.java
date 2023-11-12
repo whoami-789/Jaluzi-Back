@@ -5,20 +5,19 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Entity
-@Table(name = "roles")
+@Table(name = "sizes")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Role {
+public class Sizes {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String name;
+    private int width;
+    private int height;
 
-    @OneToMany(mappedBy = "role", cascade = CascadeType.ALL)
-    private List<User> user = new ArrayList<>();
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "order_id")
+    private Order order;
 }

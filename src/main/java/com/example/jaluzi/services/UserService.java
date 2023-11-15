@@ -3,6 +3,7 @@ package com.example.jaluzi.services;
 import com.example.jaluzi.models.User;
 import com.example.jaluzi.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,6 +12,13 @@ import java.util.List;
 public class UserService {
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    public void registerUser(User user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        userRepository.save(user);
+    }
 
     public List<User> getAllUsers() {
         return userRepository.findAll();
@@ -28,5 +36,7 @@ public class UserService {
         userRepository.deleteById(id);
     }
 
-    // Дополнительные методы по необходимости
+    public boolean existsByUsername(String username) {
+        return userRepository.existsByUsername(username);
+    }
 }

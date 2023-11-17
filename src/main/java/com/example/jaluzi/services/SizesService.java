@@ -27,6 +27,4 @@ public class SizesService {
     public void deleteSizes(Long id) {
         sizesRepository.deleteById(id);
     }
-
-    // Дополнительные методы по необходимости
 }

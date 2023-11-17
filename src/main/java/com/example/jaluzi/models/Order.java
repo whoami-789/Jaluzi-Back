@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,12 +20,19 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String customerName;
+    private LocalDate date;
     private String address;
     private String phoneNumber;
+    private boolean active;
     private int total;
     private int deposit;
     private int reminder;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private List<Sizes> sizes = new ArrayList<>();
+
+    @PrePersist
+    private void init() {
+        date = LocalDate.now();
+    }
 }

@@ -9,19 +9,20 @@ import java.util.List;
 
 @Service
 public class SizesService {
+
     @Autowired
     private SizesRepository sizesRepository;
 
-    public List<Sizes> getAllSizes() {
-        return sizesRepository.findAll();
+    public Sizes saveSizes(Sizes sizes) {
+        return sizesRepository.save(sizes);
     }
 
     public Sizes getSizesById(Long id) {
         return sizesRepository.findById(id).orElse(null);
     }
 
-    public Sizes saveSizes(Sizes sizes) {
-        return sizesRepository.save(sizes);
+    public List<Sizes> getAllSizes() {
+        return sizesRepository.findAll();
     }
 
     public void deleteSizes(Long id) {

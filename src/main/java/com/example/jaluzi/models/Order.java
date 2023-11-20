@@ -1,5 +1,6 @@
 package com.example.jaluzi.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jdk.jfr.Enabled;
 import lombok.AllArgsConstructor;
@@ -29,6 +30,7 @@ public class Order {
     private int reminder;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<Sizes> sizes = new ArrayList<>();
 
     @PrePersist

@@ -14,11 +14,9 @@ public class OrderService {
     private OrderRepository orderRepository;
 
     public Order saveOrder(Order order) {
-        // Устанавливаем поля total, deposit и reminder в 0
         order.setTotal(0);
         order.setDeposit(0);
         order.setReminder(0);
-        // Устанавливаем completed в false
         order.setCompleted(false);
         return orderRepository.save(order);
     }
@@ -29,46 +27,40 @@ public class OrderService {
             order.setCompleted(completed);
             return orderRepository.save(order);
         }
-        return null; // Здесь можно выбрасывать исключение, если заказ не найден
+        return null;
     }
 
     public Order updateDeposit(Long orderId, int deposit) {
         Order order = getOrderById(orderId);
         if (order != null) {
             order.setDeposit(deposit);
+
+            int total = order.getTotal();
+            int newReminder = total - deposit;
+            order.setReminder(newReminder);
+
             return orderRepository.save(order);
         }
-        return null; // Здесь можно выбрасывать исключение, если заказ не найден
+        return null;
     }
 
+
     public void updateOrderTotal(Long orderId) {
-        // Получаем заказ по его идентификатору
         Order order = getOrderById(orderId);
 
         if (order != null) {
-            // Рассчитываем новую общую стоимость на основе размеров заказа
             int newTotal = calculateTotal(order);
 
-            // Устанавливаем новую общую стоимость заказа
             order.setTotal(newTotal);
 
-            // Сохраняем обновленный заказ в репозиторий
             orderRepository.save(order);
         }
     }
 
     private int calculateTotal(Order order) {
-        // Реализуйте логику расчета total в соответствии с вашими требованиями
-        // Например, сумма всех размеров и других параметров заказа
-        // Это просто пример, вам нужно адаптировать под ваш бизнес-логику
-        int total = order.getSizes().stream()
-                .mapToInt(size -> size.getWidth() * size.getHeight())
+        return order.getSizes().stream()
+                .mapToInt(size -> size.getPrice() * size.getQuantity())
                 .sum();
-
-        // Добавьте другие параметры, если необходимо
-        // total += ...
-
-        return total;
     }
 
     public Order getOrderById(Long id) {

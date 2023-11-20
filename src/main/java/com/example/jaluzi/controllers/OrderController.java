@@ -1,5 +1,6 @@
 package com.example.jaluzi.controllers;
 
+import com.example.jaluzi.DTO.OrderDTO;
 import com.example.jaluzi.models.Order;
 import com.example.jaluzi.services.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,9 +53,9 @@ public class OrderController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Order>> getAllOrders() {
-        List<Order> allOrders = orderService.getAllOrders();
-        return new ResponseEntity<>(allOrders, HttpStatus.OK);
+    public ResponseEntity<List<OrderDTO>> getAllOrdersWithSizes() {
+        List<OrderDTO> allOrdersDTO = orderService.getAllOrdersDTO();
+        return new ResponseEntity<>(allOrdersDTO, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")

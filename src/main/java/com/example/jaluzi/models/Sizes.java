@@ -20,7 +20,7 @@ public class Sizes {
     private int quantity;
     private int total;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "order_id")
     private Order order;
 

@@ -23,7 +23,7 @@ public class Order {
     private LocalDate date;
     private String address;
     private String phoneNumber;
-    private boolean active;
+    private boolean complited;
     private int total;
     private int deposit;
     private int reminder;

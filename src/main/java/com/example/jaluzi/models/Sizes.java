@@ -16,8 +16,17 @@ public class Sizes {
     private Long id;
     private int width;
     private int height;
+    private int price;
+    private int quantity;
+    private int total;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "order_id")
     private Order order;
+
+    @PrePersist
+    @PreUpdate
+    private void calculateTotal() {
+        this.total = this.price * this.quantity;
+    }
 }

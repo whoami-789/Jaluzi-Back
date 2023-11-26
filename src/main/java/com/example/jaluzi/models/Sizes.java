@@ -14,11 +14,13 @@ public class Sizes {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private int width;
-    private int height;
-    private int price;
+    private double width;
+    private double height;
+    private double price;
     private int quantity;
-    private int total;
+    private double total;
+    private String note = "";
+    private double square;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "order_id")

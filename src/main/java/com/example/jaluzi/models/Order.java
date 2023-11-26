@@ -1,9 +1,6 @@
 package com.example.jaluzi.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.*;
-import jdk.jfr.Enabled;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,7 +14,6 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,9 +23,12 @@ public class Order {
     private String address;
     private String phoneNumber;
     private boolean completed = false;
-    private int total;
-    private int deposit;
-    private int reminder;
+    private boolean workshopCompleted = false;
+    private double total;
+    private double deposit;
+    private double reminder;
+    private String note = "";
+
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private List<Sizes> sizes = new ArrayList<>();

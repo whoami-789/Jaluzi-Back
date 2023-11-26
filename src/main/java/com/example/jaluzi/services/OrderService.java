@@ -1,7 +1,7 @@
 package com.example.jaluzi.services;
 
-import com.example.jaluzi.DTO.OrderDTO;
-import com.example.jaluzi.DTO.SizeDTO;
+import com.example.jaluzi.dto.OrderRequestDTO;
+import com.example.jaluzi.dto.SizesRequestDTO;
 import com.example.jaluzi.models.Order;
 import com.example.jaluzi.models.Sizes;
 import com.example.jaluzi.repositories.OrderRepository;
@@ -34,13 +34,22 @@ public class OrderService {
         return null;
     }
 
+    public Order updateNote(Long orderId, String note) {
+        Order order = getOrderById(orderId);
+        if (order != null) {
+            order.setNote(note);
+            return orderRepository.save(order);
+        }
+        return null;
+    }
+
     public Order updateDeposit(Long orderId, int deposit) {
         Order order = getOrderById(orderId);
         if (order != null) {
             order.setDeposit(deposit);
 
-            int total = order.getTotal();
-            int newReminder = total - deposit;
+            double total = order.getTotal();
+            double newReminder = total - deposit;
             order.setReminder(newReminder);
 
             return orderRepository.save(order);
@@ -53,7 +62,7 @@ public class OrderService {
         Order order = getOrderById(orderId);
 
         if (order != null) {
-            int newTotal = calculateTotal(order);
+            double newTotal = calculateTotal(order);
 
             order.setTotal(newTotal);
 
@@ -61,9 +70,9 @@ public class OrderService {
         }
     }
 
-    private int calculateTotal(Order order) {
+    private double calculateTotal(Order order) {
         return order.getSizes().stream()
-                .mapToInt(size -> size.getPrice() * size.getQuantity())
+                .mapToDouble(size -> size.getPrice() * size.getQuantity())
                 .sum();
     }
 
@@ -79,45 +88,45 @@ public class OrderService {
         orderRepository.deleteById(id);
     }
 
-    public List<OrderDTO> getAllOrdersDTO() {
+    public List<OrderRequestDTO> getAllOrdersDTO() {
         List<Order> allOrders = orderRepository.findAllWithSizes();
         return mapOrdersToDTO(allOrders);
     }
 
-    private List<OrderDTO> mapOrdersToDTO(List<Order> orders) {
+    private List<OrderRequestDTO> mapOrdersToDTO(List<Order> orders) {
         return orders.stream()
                 .map(this::mapOrderToDTO)
                 .collect(Collectors.toList());
     }
 
-    private OrderDTO mapOrderToDTO(Order order) {
-        OrderDTO orderDTO = new OrderDTO();
-        orderDTO.setId(order.getId());
-        orderDTO.setCustomerName(order.getCustomerName());
-        orderDTO.setAddress(order.getAddress());
-        orderDTO.setPhoneNumber(order.getPhoneNumber());
-        orderDTO.setDate(String.valueOf(order.getDate()));
-        orderDTO.setTotal((double) order.getTotal());
-        orderDTO.setDeposit((double) order.getDeposit());
-        orderDTO.setReminder((double) order.getReminder());
-        orderDTO.setSizes(mapSizesToDTO(order.getSizes()));
-        return orderDTO;
+    private OrderRequestDTO mapOrderToDTO(Order order) {
+        OrderRequestDTO orderRequestDTO = new OrderRequestDTO();
+        orderRequestDTO.setId(order.getId());
+        orderRequestDTO.setCustomerName(order.getCustomerName());
+        orderRequestDTO.setAddress(order.getAddress());
+        orderRequestDTO.setPhoneNumber(order.getPhoneNumber());
+        orderRequestDTO.setDate(String.valueOf(order.getDate()));
+        orderRequestDTO.setTotal(order.getTotal());
+        orderRequestDTO.setDeposit(order.getDeposit());
+        orderRequestDTO.setReminder(order.getReminder());
+        orderRequestDTO.setSizes(mapSizesToDTO(order.getSizes()));
+        return orderRequestDTO;
     }
 
-    private List<SizeDTO> mapSizesToDTO(List<Sizes> sizes) {
+    private List<SizesRequestDTO> mapSizesToDTO(List<Sizes> sizes) {
         return sizes.stream()
                 .map(this::mapSizeToDTO)
                 .collect(Collectors.toList());
     }
 
-    private SizeDTO mapSizeToDTO(Sizes size) {
-        SizeDTO sizeDTO = new SizeDTO();
-        sizeDTO.setId(size.getId());
-        sizeDTO.setWidth(size.getWidth());
-        sizeDTO.setHeight(size.getHeight());
-        sizeDTO.setQuantity(size.getQuantity());
-        sizeDTO.setPrice(size.getPrice());
-        return sizeDTO;
+    private SizesRequestDTO mapSizeToDTO(Sizes size) {
+        SizesRequestDTO sizesRequestDTO = new SizesRequestDTO();
+        sizesRequestDTO.setId(size.getId());
+        sizesRequestDTO.setWidth(size.getWidth());
+        sizesRequestDTO.setHeight(size.getHeight());
+        sizesRequestDTO.setQuantity(size.getQuantity());
+        sizesRequestDTO.setPrice(size.getPrice());
+        return sizesRequestDTO;
     }
 
 }

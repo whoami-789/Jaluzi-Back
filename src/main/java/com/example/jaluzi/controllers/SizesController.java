@@ -1,5 +1,8 @@
 package com.example.jaluzi.controllers;
 
+import com.example.jaluzi.dto.SizesInfoDTO;
+import com.example.jaluzi.dto.SizesRequestDTO;
+import com.example.jaluzi.dto.SizesResponseDTO;
 import com.example.jaluzi.models.Sizes;
 import com.example.jaluzi.services.SizesService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,23 +21,37 @@ public class SizesController {
     private SizesService sizesService;
 
     @PostMapping("/add/{orderId}")
-    public ResponseEntity<Sizes> addSizesToOrder(@PathVariable Long orderId, @RequestBody Sizes sizes) throws ChangeSetPersister.NotFoundException {
-        Sizes addedSizes = sizesService.addSizes(orderId, sizes);
-        return new ResponseEntity<>(addedSizes, HttpStatus.CREATED);
+    public ResponseEntity<SizesResponseDTO> addSizesToOrder(@PathVariable Long orderId, @RequestBody SizesRequestDTO sizesRequestDTO) throws ChangeSetPersister.NotFoundException {
+        Sizes addedSizes = sizesService.addSizes(orderId, sizesRequestDTO);
+
+        // Создаем DTO для ответа
+        SizesResponseDTO responseDTO = new SizesResponseDTO();
+        // Заполните DTO данными из добавленных размеров
+        responseDTO.setId(addedSizes.getId());
+        responseDTO.setWidth(addedSizes.getWidth());
+        responseDTO.setHeight(addedSizes.getHeight());
+        responseDTO.setQuantity(addedSizes.getQuantity());
+        responseDTO.setPrice(addedSizes.getPrice());
+        responseDTO.setNote(addedSizes.getNote());
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.CREATED);
     }
 
+
     @GetMapping("/{id}")
-    public ResponseEntity<Sizes> getSizesById(@PathVariable Long id) {
-        Sizes sizes = sizesService.getSizesById(id);
-        return sizes != null
-                ? new ResponseEntity<>(sizes, HttpStatus.OK)
+    public ResponseEntity<SizesInfoDTO> getSizesInfoById(@PathVariable Long id) {
+        SizesInfoDTO sizesInfoDTO = sizesService.getSizesInfoById(id);
+
+        return sizesInfoDTO != null
+                ? new ResponseEntity<>(sizesInfoDTO, HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @GetMapping
-    public ResponseEntity<List<Sizes>> getAllSizes() {
-        List<Sizes> allSizes = sizesService.getAllSizes();
-        return new ResponseEntity<>(allSizes, HttpStatus.OK);
+    public ResponseEntity<List<SizesInfoDTO>> getAllSizesInfo() {
+        List<SizesInfoDTO> allSizesInfo = sizesService.getAllSizesInfo();
+
+        return new ResponseEntity<>(allSizesInfo, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")

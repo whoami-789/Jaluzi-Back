@@ -1,10 +1,10 @@
-package com.example.jaluzi.DTO;
+package com.example.jaluzi.dto;
 
 import lombok.Data;
 import java.util.List;
 
 @Data
-public class OrderDTO {
+public class OrderRequestDTO {
     private Long id;
     private String customerName;
     private String address;
@@ -13,5 +13,6 @@ public class OrderDTO {
     private Double total;
     private Double deposit;
     private Double reminder;
-    private List<SizeDTO> sizes;
+    private String note;
+    private List<SizesRequestDTO> sizes;
 }

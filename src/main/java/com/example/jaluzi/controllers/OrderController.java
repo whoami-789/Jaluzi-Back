@@ -1,6 +1,6 @@
 package com.example.jaluzi.controllers;
 
-import com.example.jaluzi.DTO.OrderDTO;
+import com.example.jaluzi.dto.OrderRequestDTO;
 import com.example.jaluzi.models.Order;
 import com.example.jaluzi.services.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +43,15 @@ public class OrderController {
                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
+    @PutMapping("/{orderId}/note")
+    public ResponseEntity<Order> updateNote(@PathVariable Long orderId, @RequestBody Map<String, String> requestBody) {
+        String note = requestBody.get("note");
+        Order updatedOrder = orderService.updateNote(orderId, note);
+        return updatedOrder != null
+                ? new ResponseEntity<>(updatedOrder, HttpStatus.OK)
+                : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
 
     @GetMapping("/{id}")
     public ResponseEntity<Order> getOrderById(@PathVariable Long id) {
@@ -53,8 +62,8 @@ public class OrderController {
     }
 
     @GetMapping
-    public ResponseEntity<List<OrderDTO>> getAllOrdersWithSizes() {
-        List<OrderDTO> allOrdersDTO = orderService.getAllOrdersDTO();
+    public ResponseEntity<List<OrderRequestDTO>> getAllOrdersWithSizes() {
+        List<OrderRequestDTO> allOrdersDTO = orderService.getAllOrdersDTO();
         return new ResponseEntity<>(allOrdersDTO, HttpStatus.OK);
     }
 

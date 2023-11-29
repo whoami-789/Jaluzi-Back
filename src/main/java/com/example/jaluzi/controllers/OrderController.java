@@ -2,12 +2,18 @@ package com.example.jaluzi.controllers;
 
 import com.example.jaluzi.dto.OrderRequestDTO;
 import com.example.jaluzi.models.Order;
+import com.example.jaluzi.services.OrderReportService;
 import com.example.jaluzi.services.OrderService;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 
+import java.io.IOException;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
 
@@ -15,8 +21,14 @@ import java.util.Map;
 @RequestMapping("/api/orders")
 public class OrderController {
 
-    @Autowired
-    private OrderService orderService;
+
+    private final OrderService orderService;
+    private final OrderReportService orderReportService;
+
+    public OrderController(OrderService orderService, OrderReportService orderReportService) {
+        this.orderService = orderService;
+        this.orderReportService = orderReportService;
+    }
 
     @PostMapping
     public ResponseEntity<Order> createOrder(@RequestBody Order order) {
@@ -71,5 +83,38 @@ public class OrderController {
     public ResponseEntity<Void> deleteOrder(@PathVariable Long id) {
         orderService.deleteOrder(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @GetMapping("/{orderId}/generate-report")
+    public ResponseEntity<Resource> generateOrderReport(@PathVariable Long orderId) {
+        try {
+            String folderPath = "src/main/resources/reports/";
+
+            // Создайте абсолютный путь к файлу отчета
+            String fileName = "report_" + orderId + ".xlsx";
+            String filePath = Paths.get(folderPath, fileName).toString();
+
+            // Генерируйте отчет
+            orderReportService.generateOrderReport(orderId, filePath);
+
+            // Подготовьте файл для отправки в ответе
+            FileSystemResource resource = new FileSystemResource(filePath);
+
+            // Настройте заголовки ответа
+            HttpHeaders headers = new HttpHeaders();
+            headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + fileName);
+            headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+
+            // Верните ResponseEntity с файлом и заголовками
+            return ResponseEntity.ok()
+                    .headers(headers)
+                    .contentLength(resource.getFile().length())
+                    .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                    .body(resource);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new FileSystemResource("Error generating order report: " + e.getMessage()));
+        }
     }
 }

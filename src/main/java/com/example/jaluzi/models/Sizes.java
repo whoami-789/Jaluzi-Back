@@ -20,7 +20,7 @@ public class Sizes {
     private int quantity;
     private double total;
     private String note = "";
-    private double square;
+    private double square = width * height;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "order_id")

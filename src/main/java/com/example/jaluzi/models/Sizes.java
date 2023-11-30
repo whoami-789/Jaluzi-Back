@@ -14,6 +14,7 @@ public class Sizes {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private String name;
     private double width;
     private double height;
     private double price;

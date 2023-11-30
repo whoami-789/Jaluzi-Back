@@ -62,12 +62,17 @@ public class OrderReportService {
         headerStyle.setFillForegroundColor(IndexedColors.BRIGHT_GREEN.getIndex());
         headerStyle.setFillPattern(FillPatternType.BRICKS);
         headerStyle.setAlignment(HorizontalAlignment.FILL);
+        headerStyle.setBorderBottom(BorderStyle.THIN);
+        headerStyle.setBorderTop(BorderStyle.THIN);
+        headerStyle.setBorderLeft(BorderStyle.THIN);
+        headerStyle.setBorderRight(BorderStyle.THIN);
 
         Row orderHeaderRow = orderSheet.createRow(0);
         for (int i = 0; i < orderHeaders.length; i++) {
             Cell cell = orderHeaderRow.createCell(i);
             cell.setCellValue(orderHeaders[i]);
             cell.setCellStyle(headerStyle);
+            orderSheet.autoSizeColumn(i);
         }
 
         Row orderDataRow = orderSheet.createRow(1);
@@ -85,13 +90,17 @@ public class OrderReportService {
     }
 
     private void fillSizesSheet(Sheet sizesSheet, List<Sizes> sizes, Workbook workbook) {
-        String[] sizesHeaders = {"ID", "Ширина", "Высота", "Квадрат", "Цена", "Количество", "Итого", "Примечание"};
+        String[] sizesHeaders = {"ID", "Код жалюзей", "Ширина", "Высота", "Квадрат", "Цена", "Количество", "Итого", "Примечание"};
 
         // Стили для заголовка
         CellStyle headerStyle = workbook.createCellStyle();
         headerStyle.setFillForegroundColor(IndexedColors.BRIGHT_GREEN.getIndex());
         headerStyle.setFillPattern(FillPatternType.BRICKS);
         headerStyle.setAlignment(HorizontalAlignment.FILL);
+        headerStyle.setBorderBottom(BorderStyle.THIN);
+        headerStyle.setBorderTop(BorderStyle.THIN);
+        headerStyle.setBorderLeft(BorderStyle.THIN);
+        headerStyle.setBorderRight(BorderStyle.THIN);;
 
         Row sizesHeaderRow = sizesSheet.createRow(0);
         for (int i = 0; i < sizesHeaders.length; i++) {
@@ -103,18 +112,23 @@ public class OrderReportService {
         // Стили для данных
         CellStyle dataStyle = workbook.createCellStyle();
         dataStyle.setAlignment(HorizontalAlignment.CENTER);
+        dataStyle.setBorderBottom(BorderStyle.THIN);
+        dataStyle.setBorderTop(BorderStyle.THIN);
+        dataStyle.setBorderLeft(BorderStyle.THIN);
+        dataStyle.setBorderRight(BorderStyle.THIN);
 
         int sizesRowIndex = 1;
         for (Sizes size : sizes) {
             Row sizeDataRow = sizesSheet.createRow(sizesRowIndex++);
-            sizeDataRow.createCell(0).setCellValue(size.getId());
-            sizeDataRow.createCell(1).setCellValue(size.getWidth());
-            sizeDataRow.createCell(2).setCellValue(size.getHeight());
-            sizeDataRow.createCell(3).setCellValue(size.getSquare());
-            sizeDataRow.createCell(4).setCellValue(size.getPrice());
-            sizeDataRow.createCell(5).setCellValue(size.getQuantity());
-            sizeDataRow.createCell(6).setCellValue(size.getTotal());
-            sizeDataRow.createCell(7).setCellValue(size.getNote());
+            sizeDataRow.createCell(2).setCellValue(size.getId());
+            sizeDataRow.createCell(3).setCellValue(size.getName());
+            sizeDataRow.createCell(4).setCellValue(size.getWidth());
+            sizeDataRow.createCell(5).setCellValue(size.getHeight());
+            sizeDataRow.createCell(6).setCellValue(size.getSquare());
+            sizeDataRow.createCell(7).setCellValue(size.getPrice());
+            sizeDataRow.createCell(8).setCellValue(size.getQuantity());
+            sizeDataRow.createCell(9).setCellValue(size.getTotal());
+            sizeDataRow.createCell(10).setCellValue(size.getNote());
 
             // Применение стилей данных
             for (int i = 0; i < sizesHeaders.length; i++) {
@@ -163,12 +177,17 @@ public class OrderReportService {
         headerStyle.setFillForegroundColor(IndexedColors.BRIGHT_GREEN.getIndex());
         headerStyle.setFillPattern(FillPatternType.BRICKS);
         headerStyle.setAlignment(HorizontalAlignment.FILL);
+        headerStyle.setBorderBottom(BorderStyle.THIN);
+        headerStyle.setBorderTop(BorderStyle.THIN);
+        headerStyle.setBorderLeft(BorderStyle.THIN);
+        headerStyle.setBorderRight(BorderStyle.THIN);
 
         Row orderHeaderRow = orderSheet.createRow(0);
         for (int i = 0; i < orderHeaders.length; i++) {
             Cell cell = orderHeaderRow.createCell(i);
             cell.setCellValue(orderHeaders[i]);
             cell.setCellStyle(headerStyle);
+            orderSheet.autoSizeColumn(i);
         }
 
         Row orderDataRow = orderSheet.createRow(1);
@@ -182,13 +201,17 @@ public class OrderReportService {
     }
 
     private void fillWorkshopSizesSheet(Sheet sizesSheet, List<Sizes> sizes, Workbook workbook) {
-        String[] sizesHeaders = {"ID", "Ширина", "Высота", "Квадрат", "Количество", "Итого", "Примечание"};
+        String[] sizesHeaders = {"ID", "Код жалюзей", "Ширина", "Высота", "Квадрат", "Количество", "Итого", "Примечание"};
 
         // Стили для заголовка
         CellStyle headerStyle = workbook.createCellStyle();
         headerStyle.setFillForegroundColor(IndexedColors.BRIGHT_GREEN.getIndex());
         headerStyle.setFillPattern(FillPatternType.BRICKS);
         headerStyle.setAlignment(HorizontalAlignment.FILL);
+        headerStyle.setBorderBottom(BorderStyle.THIN);
+        headerStyle.setBorderTop(BorderStyle.THIN);
+        headerStyle.setBorderLeft(BorderStyle.THIN);
+        headerStyle.setBorderRight(BorderStyle.THIN);
 
         Row sizesHeaderRow = sizesSheet.createRow(0);
         for (int i = 0; i < sizesHeaders.length; i++) {
@@ -200,17 +223,22 @@ public class OrderReportService {
         // Стили для данных
         CellStyle dataStyle = workbook.createCellStyle();
         dataStyle.setAlignment(HorizontalAlignment.CENTER);
+        dataStyle.setBorderBottom(BorderStyle.THIN);
+        dataStyle.setBorderTop(BorderStyle.THIN);
+        dataStyle.setBorderLeft(BorderStyle.THIN);
+        dataStyle.setBorderRight(BorderStyle.THIN);
 
         int sizesRowIndex = 1;
         for (Sizes size : sizes) {
             Row sizeDataRow = sizesSheet.createRow(sizesRowIndex++);
             sizeDataRow.createCell(0).setCellValue(size.getId());
-            sizeDataRow.createCell(1).setCellValue(size.getWidth());
-            sizeDataRow.createCell(2).setCellValue(size.getHeight());
-            sizeDataRow.createCell(3).setCellValue(size.getSquare());
-            sizeDataRow.createCell(4).setCellValue(size.getQuantity());
-            sizeDataRow.createCell(5).setCellValue(size.getTotal());
-            sizeDataRow.createCell(6).setCellValue(size.getNote());
+            sizeDataRow.createCell(1).setCellValue(size.getName());
+            sizeDataRow.createCell(2).setCellValue(size.getWidth());
+            sizeDataRow.createCell(3).setCellValue(size.getHeight());
+            sizeDataRow.createCell(4).setCellValue(size.getSquare());
+            sizeDataRow.createCell(5).setCellValue(size.getQuantity());
+            sizeDataRow.createCell(6).setCellValue(size.getTotal());
+            sizeDataRow.createCell(7).setCellValue(size.getNote());
 
             // Применение стилей данных
             for (int i = 0; i < sizesHeaders.length; i++) {
@@ -267,7 +295,7 @@ public class OrderReportService {
         double totalAmount = getTotalAmountForMonth(monthYear); // Подстраивайте метод под вашу логику
 
         // Создаем ячейку для записи суммы Total заказов за месяц
-        Cell totalValueCell = totalRow.createCell(7);
+        Cell totalValueCell = totalRow.createCell(1);
         totalValueCell.setCellValue(totalAmount);
 
         // Возвращаем индекс следующей строки после подсчета Total
@@ -309,7 +337,7 @@ public class OrderReportService {
     }
 
     private int fillSizesSheet(Sheet sizesSheet, List<Sizes> sizes, CellStyle headerStyle, int rowIndex) {
-        String[] sizesHeaders = {"ID", "Ширина", "Высота", "Квадрат", "Цена", "Количество", "Итого", "Примечание"};
+        String[] sizesHeaders = {"ID", "Код жалюзей", "Ширина", "Высота", "Квадрат", "Цена", "Количество", "Итого", "Примечание"};
 
         // Используйте rowIndex для создания строк
         Row sizesHeaderRow = sizesSheet.createRow(rowIndex);
@@ -323,13 +351,14 @@ public class OrderReportService {
         for (Sizes size : sizes) {
             Row sizeDataRow = sizesSheet.createRow(sizesRowIndex++);
             sizeDataRow.createCell(2).setCellValue(size.getId());
-            sizeDataRow.createCell(3).setCellValue(size.getWidth());
-            sizeDataRow.createCell(4).setCellValue(size.getHeight());
-            sizeDataRow.createCell(5).setCellValue(size.getSquare());
-            sizeDataRow.createCell(6).setCellValue(size.getPrice());
-            sizeDataRow.createCell(7).setCellValue(size.getQuantity());
-            sizeDataRow.createCell(8).setCellValue(size.getTotal());
-            sizeDataRow.createCell(9).setCellValue(size.getNote());
+            sizeDataRow.createCell(3).setCellValue(size.getName());
+            sizeDataRow.createCell(4).setCellValue(size.getWidth());
+            sizeDataRow.createCell(5).setCellValue(size.getHeight());
+            sizeDataRow.createCell(6).setCellValue(size.getSquare());
+            sizeDataRow.createCell(7).setCellValue(size.getPrice());
+            sizeDataRow.createCell(8).setCellValue(size.getQuantity());
+            sizeDataRow.createCell(9).setCellValue(size.getTotal());
+            sizeDataRow.createCell(10).setCellValue(size.getNote());
         }
 
         return sizesRowIndex + 1; // Возвращаем индекс следующей строки после размеров
@@ -357,10 +386,10 @@ public class OrderReportService {
         Font font = workbook.createFont();
         font.setBold(true);
         style.setFont(font);
-        style.setBorderBottom(workbook.createCellStyle().getBorderBottom());
-        style.setBorderTop(workbook.createCellStyle().getBorderTop());
-        style.setBorderLeft(workbook.createCellStyle().getBorderLeft());
-        style.setBorderRight(workbook.createCellStyle().getBorderRight());
+        style.setBorderBottom(BorderStyle.THIN);
+        style.setBorderTop(BorderStyle.THIN);
+        style.setBorderLeft(BorderStyle.THIN);
+        style.setBorderRight(BorderStyle.THIN);
         return style;
     }
 
@@ -375,6 +404,7 @@ public class OrderReportService {
             Cell cell = orderHeaderRow.createCell(i);
             cell.setCellValue(orderHeaders[i]);
             cell.setCellStyle(headerStyle);
+            orderSheet.autoSizeColumn(i);
         }
 
         Row orderDataRow = orderSheet.createRow(rowIndex + 1);
@@ -397,7 +427,7 @@ public class OrderReportService {
 
 
         // Возвращаем индекс следующей строки после данных о заказе
-        return rowIndex + 3;
+        return rowIndex + 2;
     }
 
 

@@ -25,7 +25,7 @@ public class SizesController {
         Sizes addedSizes = sizesService.addSizes(orderId, sizesRequestDTO);
 
         // Создаем DTO для ответа
-        SizesResponseDTO responseDTO = new SizesResponseDTO();
+        SizesResponseDTO responseDTO = new SizesResponseDTO(addedSizes.getId(), addedSizes.getName(), addedSizes.getWidth(), addedSizes.getHeight(), addedSizes.getSquare(), addedSizes.getPrice(), addedSizes.getQuantity(), addedSizes.getTotal(), addedSizes.getNote());
         // Заполните DTO данными из добавленных размеров
         responseDTO.setId(addedSizes.getId());
         responseDTO.setWidth(addedSizes.getWidth());

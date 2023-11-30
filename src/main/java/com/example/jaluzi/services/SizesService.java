@@ -30,6 +30,7 @@ public class SizesService {
 
         Sizes sizes = new Sizes();
         // Заполните размеры данными из DTO
+        sizes.setName(sizesRequestDTO.getName());
         sizes.setWidth(sizesRequestDTO.getWidth());
         sizes.setHeight(sizesRequestDTO.getHeight());
         sizes.setQuantity(sizesRequestDTO.getQuantity());
@@ -50,6 +51,7 @@ public class SizesService {
         if (sizes != null) {
             return new SizesInfoDTO(
                     sizes.getId(),
+                    sizes.getName(),
                     sizes.getWidth(),
                     sizes.getHeight(),
                     sizes.getQuantity(),
@@ -66,9 +68,10 @@ public class SizesService {
         List<SizesInfoDTO> allSizesInfoDTO = new ArrayList<>();
 
         for (Sizes sizes : allSizes) {
-            SizesInfoDTO sizesInfoDTO = new SizesInfoDTO(sizes.getId(), sizes.getWidth(), sizes.getHeight(), sizes.getQuantity(), sizes.getPrice(), sizes.getNote(), sizes.getOrder().getId());
+            SizesInfoDTO sizesInfoDTO = new SizesInfoDTO(sizes.getId(), sizes.getName(), sizes.getWidth(), sizes.getHeight(), sizes.getQuantity(), sizes.getPrice(), sizes.getNote(), sizes.getOrder().getId());
             // Заполните DTO данными из размеров
             sizesInfoDTO.setId(sizes.getId());
+            sizesInfoDTO.setName(sizes.getName());
             sizesInfoDTO.setWidth(sizes.getWidth());
             sizesInfoDTO.setHeight(sizes.getHeight());
             sizesInfoDTO.setQuantity(sizes.getQuantity());

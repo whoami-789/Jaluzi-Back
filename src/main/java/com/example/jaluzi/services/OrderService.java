@@ -27,25 +27,23 @@ public class OrderService {
         return orderRepository.save(order);
     }
 
-    public Order updateCompleted(Long orderId, boolean completed) {
+    public void updateCompleted(Long orderId, boolean completed) {
         Order order = getOrderById(orderId);
         if (order != null) {
             order.setCompleted(completed);
-            return orderRepository.save(order);
+            orderRepository.save(order);
         }
-        return null;
     }
 
-    public Order updateNote(Long orderId, String note) {
+    public void updateNote(Long orderId, String note) {
         Order order = getOrderById(orderId);
         if (order != null) {
             order.setNote(note);
-            return orderRepository.save(order);
+            orderRepository.save(order);
         }
-        return null;
     }
 
-    public Order updateDeposit(Long orderId, double deposit) {
+    public void updateDeposit(Long orderId, double deposit) {
         Order order = getOrderById(orderId);
         if (order != null) {
             order.setDeposit(deposit);
@@ -54,9 +52,8 @@ public class OrderService {
             double newReminder = total - deposit;
             order.setReminder(newReminder);
 
-            return orderRepository.save(order);
+            orderRepository.save(order);
         }
-        return null;
     }
 
 
@@ -108,6 +105,7 @@ public class OrderService {
     private SizesResponseDTO convertToSizesResponseDTO(Sizes sizes) {
         return new SizesResponseDTO(
                 sizes.getId(),
+                sizes.getName(),
                 sizes.getWidth(),
                 sizes.getHeight(),
                 sizes.getSquare(),
@@ -160,6 +158,7 @@ public class OrderService {
     private SizesRequestDTO mapSizeToDTO(Sizes size) {
         SizesRequestDTO sizesRequestDTO = new SizesRequestDTO();
         sizesRequestDTO.setId(size.getId());
+        sizesRequestDTO.setName(size.getName());
         sizesRequestDTO.setWidth(size.getWidth());
         sizesRequestDTO.setHeight(size.getHeight());
         sizesRequestDTO.setQuantity(size.getQuantity());

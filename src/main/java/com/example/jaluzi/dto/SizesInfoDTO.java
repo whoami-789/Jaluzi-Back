@@ -5,6 +5,7 @@ import lombok.Data;
 @Data
 public class SizesInfoDTO {
     private Long id;
+    private String name;
     private double width;
     private double height;
     private double quantity;
@@ -12,8 +13,9 @@ public class SizesInfoDTO {
     private String note;
     private Long order;
 
-    public SizesInfoDTO(Long id, double width, double height, double quantity, double price, String note, Long order) {
+    public SizesInfoDTO(Long id, String name, double width, double height, double quantity, double price, String note, Long order) {
         this.id = id;
+        this.name = name;
         this.width = width;
         this.height = height;
         this.quantity = quantity;

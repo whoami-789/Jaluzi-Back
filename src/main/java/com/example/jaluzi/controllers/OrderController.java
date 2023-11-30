@@ -47,6 +47,16 @@ public class OrderController {
                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
+    @PutMapping("/{orderId}/workshop-completed")
+    public ResponseEntity<OrderResponseDTO> updateWorkshopCompleted(@PathVariable Long orderId, @RequestBody Map<String, Boolean> requestBody) {
+        boolean completed = requestBody.get("completed");
+        orderService.updateCompleted(orderId, completed);
+        OrderResponseDTO orderResponseDTO = orderService.getOrderResponseById(orderId);
+        return orderResponseDTO != null
+                ? new ResponseEntity<>(orderResponseDTO, HttpStatus.OK)
+                : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
 
     @PutMapping("/{orderId}/deposit")
     public ResponseEntity<OrderResponseDTO> updateDeposit(@PathVariable Long orderId, @RequestBody Map<String, Integer> requestBody) {

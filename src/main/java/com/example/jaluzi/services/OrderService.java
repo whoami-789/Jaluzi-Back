@@ -35,6 +35,14 @@ public class OrderService {
         }
     }
 
+    public void updateWorkshopCompleted(Long orderId, boolean workshopCompleted) {
+        Order order = getOrderById(orderId);
+        if (order != null) {
+            order.setWorkshopCompleted(workshopCompleted);
+            orderRepository.save(order);
+        }
+    }
+
     public void updateNote(Long orderId, String note) {
         Order order = getOrderById(orderId);
         if (order != null) {

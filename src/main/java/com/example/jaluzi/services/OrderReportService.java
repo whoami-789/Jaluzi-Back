@@ -107,33 +107,28 @@ public class OrderReportService {
             Cell cell = sizesHeaderRow.createCell(i);
             cell.setCellValue(sizesHeaders[i]);
             cell.setCellStyle(headerStyle);
+            sizesSheet.autoSizeColumn(i);
         }
 
         // Стили для данных
         CellStyle dataStyle = workbook.createCellStyle();
         dataStyle.setAlignment(HorizontalAlignment.CENTER);
-        dataStyle.setBorderBottom(BorderStyle.THIN);
-        dataStyle.setBorderTop(BorderStyle.THIN);
-        dataStyle.setBorderLeft(BorderStyle.THIN);
-        dataStyle.setBorderRight(BorderStyle.THIN);
 
         int sizesRowIndex = 1;
         for (Sizes size : sizes) {
             Row sizeDataRow = sizesSheet.createRow(sizesRowIndex++);
-            sizeDataRow.createCell(2).setCellValue(size.getId());
-            sizeDataRow.createCell(3).setCellValue(size.getName());
-            sizeDataRow.createCell(4).setCellValue(size.getWidth());
-            sizeDataRow.createCell(5).setCellValue(size.getHeight());
-            sizeDataRow.createCell(6).setCellValue(size.getSquare());
-            sizeDataRow.createCell(7).setCellValue(size.getPrice());
-            sizeDataRow.createCell(8).setCellValue(size.getQuantity());
-            sizeDataRow.createCell(9).setCellValue(size.getTotal());
-            sizeDataRow.createCell(10).setCellValue(size.getNote());
+            sizeDataRow.createCell(0).setCellValue(size.getId());
+            sizeDataRow.createCell(1).setCellValue(size.getName());
+            sizeDataRow.createCell(2).setCellValue(size.getWidth());
+            sizeDataRow.createCell(3).setCellValue(size.getHeight());
+            sizeDataRow.createCell(4).setCellValue(size.getSquare());
+            sizeDataRow.createCell(5).setCellValue(size.getPrice());
+            sizeDataRow.createCell(6).setCellValue(size.getQuantity());
+            sizeDataRow.createCell(7).setCellValue(size.getTotal());
+            sizeDataRow.createCell(8).setCellValue(size.getNote());
 
             // Применение стилей данных
-            for (int i = 0; i < sizesHeaders.length; i++) {
-                sizeDataRow.getCell(i).setCellStyle(dataStyle);
-            }
+            for (int i = 0; i < sizesHeaders.length; i++) sizeDataRow.getCell(i).setCellStyle(dataStyle);
         }
     }
 

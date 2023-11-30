@@ -34,6 +34,7 @@ public class SizesService {
         sizes.setHeight(sizesRequestDTO.getHeight());
         sizes.setQuantity(sizesRequestDTO.getQuantity());
         sizes.setPrice(sizesRequestDTO.getPrice());
+        sizes.setSquare(sizesRequestDTO.getWidth() * sizesRequestDTO.getHeight());
 
         sizes.setOrder(order);
 

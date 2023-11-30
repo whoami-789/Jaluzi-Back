@@ -1,6 +1,7 @@
 package com.example.jaluzi.controllers;
 
 import com.example.jaluzi.dto.OrderRequestDTO;
+import com.example.jaluzi.dto.OrderResponseDTO;
 import com.example.jaluzi.models.Order;
 import com.example.jaluzi.services.OrderReportService;
 import com.example.jaluzi.services.OrderService;
@@ -37,39 +38,42 @@ public class OrderController {
     }
 
     @PutMapping("/{orderId}/completed")
-    public ResponseEntity<Order> updateCompleted(@PathVariable Long orderId, @RequestBody Map<String, Boolean> requestBody) {
+    public ResponseEntity<OrderResponseDTO> updateCompleted(@PathVariable Long orderId, @RequestBody Map<String, Boolean> requestBody) {
         boolean completed = requestBody.get("completed");
-        Order updatedOrder = orderService.updateCompleted(orderId, completed);
-        return updatedOrder != null
-                ? new ResponseEntity<>(updatedOrder, HttpStatus.OK)
+        orderService.updateCompleted(orderId, completed);
+        OrderResponseDTO orderResponseDTO = orderService.getOrderResponseById(orderId);
+        return orderResponseDTO != null
+                ? new ResponseEntity<>(orderResponseDTO, HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
 
     @PutMapping("/{orderId}/deposit")
-    public ResponseEntity<Order> updateDeposit(@PathVariable Long orderId, @RequestBody Map<String, Integer> requestBody) {
-        int deposit = requestBody.get("deposit");
-        Order updatedOrder = orderService.updateDeposit(orderId, deposit);
-        return updatedOrder != null
-                ? new ResponseEntity<>(updatedOrder, HttpStatus.OK)
+    public ResponseEntity<OrderResponseDTO> updateDeposit(@PathVariable Long orderId, @RequestBody Map<String, Integer> requestBody) {
+        double deposit = requestBody.get("deposit");
+        orderService.updateDeposit(orderId, deposit);
+        OrderResponseDTO orderResponseDTO = orderService.getOrderResponseById(orderId);
+        return orderResponseDTO != null
+                ? new ResponseEntity<>(orderResponseDTO, HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @PutMapping("/{orderId}/note")
-    public ResponseEntity<Order> updateNote(@PathVariable Long orderId, @RequestBody Map<String, String> requestBody) {
+    public ResponseEntity<OrderResponseDTO> updateNote(@PathVariable Long orderId, @RequestBody Map<String, String> requestBody) {
         String note = requestBody.get("note");
-        Order updatedOrder = orderService.updateNote(orderId, note);
-        return updatedOrder != null
-                ? new ResponseEntity<>(updatedOrder, HttpStatus.OK)
+        orderService.updateNote(orderId, note);
+        OrderResponseDTO orderResponseDTO = orderService.getOrderResponseById(orderId);
+        return orderResponseDTO != null
+                ? new ResponseEntity<>(orderResponseDTO, HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
 
     @GetMapping("/{id}")
-    public ResponseEntity<Order> getOrderById(@PathVariable Long id) {
-        Order order = orderService.getOrderById(id);
-        return order != null
-                ? new ResponseEntity<>(order, HttpStatus.OK)
+    public ResponseEntity<OrderResponseDTO> getOrderById(@PathVariable Long id) {
+        OrderResponseDTO orderResponseDTO = orderService.getOrderResponseById(id);
+        return orderResponseDTO != null
+                ? new ResponseEntity<>(orderResponseDTO, HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
@@ -88,7 +92,7 @@ public class OrderController {
     @GetMapping("/{orderId}/generate-report")
     public ResponseEntity<Resource> generateOrderReport(@PathVariable Long orderId) {
         try {
-            String folderPath = "src/main/resources/reports/";
+            String folderPath = "src/main/resources/reports/main/";
 
             // Создайте абсолютный путь к файлу отчета
             String fileName = "report_" + orderId + ".xlsx";
@@ -96,6 +100,38 @@ public class OrderController {
 
             // Генерируйте отчет
             orderReportService.generateOrderReport(orderId, filePath);
+
+            // Подготовьте файл для отправки в ответе
+            FileSystemResource resource = new FileSystemResource(filePath);
+
+            // Настройте заголовки ответа
+            HttpHeaders headers = new HttpHeaders();
+            headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + fileName);
+            headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+
+            // Верните ResponseEntity с файлом и заголовками
+            return ResponseEntity.ok()
+                    .headers(headers)
+                    .contentLength(resource.getFile().length())
+                    .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                    .body(resource);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new FileSystemResource("Error generating order report: " + e.getMessage()));
+        }
+    }
+@GetMapping("/{orderId}/generate-workshop-report")
+    public ResponseEntity<Resource> generateWorkshopOrderReport(@PathVariable Long orderId) {
+        try {
+            String folderPath = "src/main/resources/reports/workshop/";
+
+            // Создайте абсолютный путь к файлу отчета
+            String fileName = "report_" + orderId + ".xlsx";
+            String filePath = Paths.get(folderPath, fileName).toString();
+
+            // Генерируйте отчет
+            orderReportService.generateWorkshopOrderReport(orderId, filePath);
 
             // Подготовьте файл для отправки в ответе
             FileSystemResource resource = new FileSystemResource(filePath);

@@ -1,7 +1,9 @@
 package com.example.jaluzi.services;
 
 import com.example.jaluzi.dto.OrderRequestDTO;
+import com.example.jaluzi.dto.OrderResponseDTO;
 import com.example.jaluzi.dto.SizesRequestDTO;
+import com.example.jaluzi.dto.SizesResponseDTO;
 import com.example.jaluzi.models.Order;
 import com.example.jaluzi.models.Sizes;
 import com.example.jaluzi.repositories.OrderRepository;
@@ -43,7 +45,7 @@ public class OrderService {
         return null;
     }
 
-    public Order updateDeposit(Long orderId, int deposit) {
+    public Order updateDeposit(Long orderId, double deposit) {
         Order order = getOrderById(orderId);
         if (order != null) {
             order.setDeposit(deposit);
@@ -79,7 +81,42 @@ public class OrderService {
     public Order getOrderById(Long id) {
         return orderRepository.findById(id).orElse(null);
     }
+    public OrderResponseDTO getOrderResponseById(Long id) {
+        Order order = orderRepository.findById(id).orElse(null);
+        return order != null ? convertToOrderResponseDTO(order) : null;
+    }
 
+    private OrderResponseDTO convertToOrderResponseDTO(Order order) {
+        List<SizesResponseDTO> sizesResponseDTOList = order.getSizes().stream()
+                .map(this::convertToSizesResponseDTO)
+                .collect(Collectors.toList());
+
+        return new OrderResponseDTO(
+                order.getId(),
+                order.getCustomerName(),
+                order.getAddress(),
+                order.getPhoneNumber(),
+                order.getDate().toString(),
+                order.getTotal(),
+                order.getDeposit(),
+                order.getReminder(),
+                order.getNote(),
+                sizesResponseDTOList
+        );
+    }
+
+    private SizesResponseDTO convertToSizesResponseDTO(Sizes sizes) {
+        return new SizesResponseDTO(
+                sizes.getId(),
+                sizes.getWidth(),
+                sizes.getHeight(),
+                sizes.getSquare(),
+                sizes.getPrice(),
+                sizes.getQuantity(),
+                sizes.getTotal(),
+                sizes.getNote()
+        );
+    }
     public List<Order> getAllOrders() {
         return orderRepository.findAll();
     }
@@ -92,6 +129,7 @@ public class OrderService {
         List<Order> allOrders = orderRepository.findAllWithSizes();
         return mapOrdersToDTO(allOrders);
     }
+
 
     private List<OrderRequestDTO> mapOrdersToDTO(List<Order> orders) {
         return orders.stream()

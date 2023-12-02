@@ -5,7 +5,7 @@ import java.util.List;
 
 @Data
 public class OrderRequestDTO {
-    private Long id;
+    private Long key;
     private String customerName;
     private String address;
     private String phoneNumber;

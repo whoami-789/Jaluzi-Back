@@ -4,22 +4,30 @@ import com.example.jaluzi.dto.SizesInfoDTO;
 import com.example.jaluzi.dto.SizesRequestDTO;
 import com.example.jaluzi.models.Order;
 import com.example.jaluzi.models.Sizes;
+import com.example.jaluzi.repositories.OrderRepository;
 import com.example.jaluzi.repositories.SizesRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class SizesService {
 
-    @Autowired
-    private SizesRepository sizesRepository;
+    private final SizesRepository sizesRepository;
 
-    @Autowired
-    private OrderService orderService;
+    private final OrderService orderService;
+
+    private final OrderRepository orderRepository;
+
+    public SizesService(SizesRepository sizesRepository, OrderService orderService, OrderRepository orderRepository) {
+        this.sizesRepository = sizesRepository;
+        this.orderService = orderService;
+        this.orderRepository = orderRepository;
+    }
 
     public Sizes addSizes(Long orderId, SizesRequestDTO sizesRequestDTO) throws ChangeSetPersister.NotFoundException {
         Order order = orderService.getOrderById(orderId);
@@ -95,16 +103,67 @@ public class SizesService {
         return sizesRepository.findAll();
     }
 
-    public void deleteSizes(Long id) {
-        sizesRepository.deleteById(id);
+    public Order getOrderById(Long id) {
+        return orderRepository.findById(id).orElse(null);
     }
 
-    public Sizes updateNote(Long sizeId, String note) {
+//    @Transactional
+//    public void deleteSizes(Long id) {
+//        try {
+//            // Получаем размер для получения связанного заказа
+//            Optional<Sizes> sizeOptional = sizesRepository.findById(id);
+//
+//            sizeOptional.ifPresent(size -> {
+//                // Получаем связанный заказ
+//                Order order = size.getOrder();
+//
+//                // Удаляем размер
+//                sizesRepository.deleteById(id);
+//
+//                // Пересчитываем итоговую стоимость заказа
+//                recalculateOrderTotal(order.getId());
+//
+//                // Обновляем заказ в репозитории
+//                orderRepository.save(order);
+//            });
+//        } catch (Exception e) {
+//            // Обработка ошибок, если необходимо
+//            e.printStackTrace();
+//        }
+//    }
+
+    public void deleteSizes(Long id, Order orderId) {
+        sizesRepository.deleteById(id);
+        recalculateOrderTotal(orderId);
+    }
+
+    private void recalculateOrderTotal(Order id) {
+
+        if (id != null) {
+            double newTotal = calculateTotal(id);
+
+            id.setTotal(newTotal);
+            id.setReminder(newTotal - id.getReminder());
+
+            orderRepository.save(id);
+        }
+    }
+
+    public void updateOrderTotal(Long orderId) {
+
+    }
+
+    private double calculateTotal(Order order) {
+        return order.getSizes().stream()
+                .mapToDouble(size -> size.getPrice() * size.getQuantity())
+                .sum();
+    }
+
+    public void updateNote(Long sizeId, String note) {
         Sizes sizes = getSizesById(sizeId);
         if (sizes != null) {
             sizes.setNote(note);
-            return sizesRepository.save(sizes);
+            sizesRepository.save(sizes);
         }
-        return null;
     }
 }

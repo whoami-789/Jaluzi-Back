@@ -50,7 +50,7 @@ public class OrderController {
     @PutMapping("/{orderId}/workshop-completed")
     public ResponseEntity<OrderResponseDTO> updateWorkshopCompleted(@PathVariable Long orderId, @RequestBody Map<String, Boolean> requestBody) {
         boolean completed = requestBody.get("completed");
-        orderService.updateCompleted(orderId, completed);
+        orderService.updateWorkshopCompleted(orderId, completed);
         OrderResponseDTO orderResponseDTO = orderService.getOrderResponseById(orderId);
         return orderResponseDTO != null
                 ? new ResponseEntity<>(orderResponseDTO, HttpStatus.OK)

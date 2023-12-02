@@ -3,6 +3,7 @@ package com.example.jaluzi.controllers;
 import com.example.jaluzi.dto.SizesInfoDTO;
 import com.example.jaluzi.dto.SizesRequestDTO;
 import com.example.jaluzi.dto.SizesResponseDTO;
+import com.example.jaluzi.models.Order;
 import com.example.jaluzi.models.Sizes;
 import com.example.jaluzi.services.SizesService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/sizes")
@@ -55,8 +57,15 @@ public class SizesController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteSizes(@PathVariable Long id) {
-        sizesService.deleteSizes(id);
+    public ResponseEntity<Void> deleteSizes(@PathVariable Long id, @RequestParam Order orderId) {
+        sizesService.deleteSizes(id, orderId);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @PutMapping("/{id}/note")
+    public ResponseEntity<Void> updateNote(@PathVariable Long id, @RequestBody Map<String, String> requestBody) {
+        String note = requestBody.get("SizeNote");
+        sizesService.updateNote(id, note);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

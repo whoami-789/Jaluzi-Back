@@ -15,9 +15,6 @@ public class SizesResponseDTO {
     private Long order;
     private double square;
 
-//    public SizesResponseDTO(Long id, String name, double width, double height, double square, double price, int quantity, double total, String note) {
-//
-//    }
 
     public SizesResponseDTO(Long id, String name, double width, double height, double square, double price, int quantity, double total, String note) {
         this.id = id;

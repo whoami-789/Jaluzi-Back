@@ -16,9 +16,11 @@ public class OrderResponseDTO {
     private Double reminder;
     private String note;
     private List<SizesResponseDTO> sizes;
+    private boolean completed;
+    private boolean workshopCompleted;
 
     public OrderResponseDTO(Long id, String customerName, String address, String phoneNumber, String date,
-                            Double total, Double deposit, Double reminder, String note, List<SizesResponseDTO> sizes) {
+                            Double total, Double deposit, Double reminder, String note, boolean completed, boolean workshopCompleted, List<SizesResponseDTO> sizes) {
         this.id = id;
         this.customerName = customerName;
         this.address = address;
@@ -28,6 +30,8 @@ public class OrderResponseDTO {
         this.deposit = deposit;
         this.reminder = reminder;
         this.note = note;
+        this.completed = completed;
+        this.workshopCompleted = workshopCompleted;
         this.sizes = sizes;
     }
 }

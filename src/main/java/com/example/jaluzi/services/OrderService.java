@@ -24,6 +24,7 @@ public class OrderService {
         order.setDeposit(0);
         order.setReminder(0);
         order.setCompleted(false);
+        order.setWorkshopCompleted(false);
         return orderRepository.save(order);
     }
 
@@ -106,6 +107,8 @@ public class OrderService {
                 order.getDeposit(),
                 order.getReminder(),
                 order.getNote(),
+                order.isCompleted(),
+                order.isWorkshopCompleted(),
                 sizesResponseDTOList
         );
     }
@@ -145,7 +148,7 @@ public class OrderService {
 
     private OrderRequestDTO mapOrderToDTO(Order order) {
         OrderRequestDTO orderRequestDTO = new OrderRequestDTO();
-        orderRequestDTO.setId(order.getId());
+        orderRequestDTO.setKey(order.getId());
         orderRequestDTO.setCustomerName(order.getCustomerName());
         orderRequestDTO.setAddress(order.getAddress());
         orderRequestDTO.setPhoneNumber(order.getPhoneNumber());
@@ -153,6 +156,7 @@ public class OrderService {
         orderRequestDTO.setTotal(order.getTotal());
         orderRequestDTO.setDeposit(order.getDeposit());
         orderRequestDTO.setReminder(order.getReminder());
+        orderRequestDTO.setNote(order.getNote());
         orderRequestDTO.setSizes(mapSizesToDTO(order.getSizes()));
         return orderRequestDTO;
     }
@@ -165,11 +169,14 @@ public class OrderService {
 
     private SizesRequestDTO mapSizeToDTO(Sizes size) {
         SizesRequestDTO sizesRequestDTO = new SizesRequestDTO();
-        sizesRequestDTO.setId(size.getId());
+        sizesRequestDTO.setKey(size.getId());
         sizesRequestDTO.setName(size.getName());
         sizesRequestDTO.setWidth(size.getWidth());
         sizesRequestDTO.setHeight(size.getHeight());
         sizesRequestDTO.setQuantity(size.getQuantity());
+        sizesRequestDTO.setSquare(size.getSquare());
+        sizesRequestDTO.setTotal(size.getTotal());
+        sizesRequestDTO.setNote(size.getNote());
         sizesRequestDTO.setPrice(size.getPrice());
         return sizesRequestDTO;
     }

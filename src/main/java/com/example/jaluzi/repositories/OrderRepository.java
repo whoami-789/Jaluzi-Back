@@ -12,4 +12,8 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     List<Order> findAllWithSizes();
 
     @Query("SELECT o FROM Order o WHERE MONTH(o.date) = :month AND YEAR(o.date) = :year")
-    List<Order> findByMonthAndYear(@Param("month") int month, @Param("year") int year);}
+    List<Order> findByMonthAndYear(@Param("month") int month, @Param("year") int year);
+
+    Order findOrderBySizesId(Long sizeId);
+
+}

@@ -14,5 +14,7 @@ public class OrderRequestDTO {
     private Double deposit;
     private Double reminder;
     private String note;
+    private boolean completed;
+    private boolean workshopCompleted;
     private List<SizesRequestDTO> sizes;
 }

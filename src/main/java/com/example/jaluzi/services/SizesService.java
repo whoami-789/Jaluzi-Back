@@ -143,7 +143,7 @@ public class SizesService {
             double newTotal = calculateTotal(id);
 
             id.setTotal(newTotal);
-            id.setReminder(newTotal - id.getReminder());
+            id.setReminder(newTotal - id.getDeposit());
 
             orderRepository.save(id);
         }

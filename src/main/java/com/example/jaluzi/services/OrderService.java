@@ -157,6 +157,8 @@ public class OrderService {
         orderRequestDTO.setDeposit(order.getDeposit());
         orderRequestDTO.setReminder(order.getReminder());
         orderRequestDTO.setNote(order.getNote());
+        orderRequestDTO.setCompleted(order.isCompleted());
+        orderRequestDTO.setWorkshopCompleted(order.isWorkshopCompleted());
         orderRequestDTO.setSizes(mapSizesToDTO(order.getSizes()));
         return orderRequestDTO;
     }

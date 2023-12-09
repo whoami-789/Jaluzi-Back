@@ -17,4 +17,5 @@ public class OrderRequestDTO {
     private boolean completed;
     private boolean workshopCompleted;
     private List<SizesRequestDTO> sizes;
+    private double sizesSquareTotal;
 }

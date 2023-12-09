@@ -159,6 +159,7 @@ public class OrderService {
         orderRequestDTO.setNote(order.getNote());
         orderRequestDTO.setCompleted(order.isCompleted());
         orderRequestDTO.setWorkshopCompleted(order.isWorkshopCompleted());
+        orderRequestDTO.setSizesSquareTotal(order.calculateTotalSquare());
         orderRequestDTO.setSizes(mapSizesToDTO(order.getSizes()));
         return orderRequestDTO;
     }
@@ -180,6 +181,7 @@ public class OrderService {
         sizesRequestDTO.setTotal(size.getTotal());
         sizesRequestDTO.setNote(size.getNote());
         sizesRequestDTO.setPrice(size.getPrice());
+        sizesRequestDTO.setTotalSquare(size.getSquare() * size.getQuantity());
         return sizesRequestDTO;
     }
 

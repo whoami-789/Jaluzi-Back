@@ -102,7 +102,7 @@ public class OrderController {
     @GetMapping("/{orderId}/generate-report")
     public ResponseEntity<Resource> generateOrderReport(@PathVariable Long orderId) {
         try {
-            String folderPath = "src/main/resources/reports/main/";
+            String folderPath = "/home/reports/order/";
 
             // Создайте абсолютный путь к файлу отчета
             String fileName = "report_" + orderId + ".xlsx";
@@ -134,7 +134,7 @@ public class OrderController {
 @GetMapping("/{orderId}/generate-workshop-report")
     public ResponseEntity<Resource> generateWorkshopOrderReport(@PathVariable Long orderId) {
         try {
-            String folderPath = "src/main/resources/reports/workshop/";
+            String folderPath = "/home/reports/workshop/";
 
             // Создайте абсолютный путь к файлу отчета
             String fileName = "report_" + orderId + ".xlsx";

@@ -30,6 +30,10 @@ public class Sizes {
     @PrePersist
     @PreUpdate
     private void calculateTotal() {
-        this.total = this.price * this.quantity;
+        if (this.square <= 1.0) {
+             this.total = this.price * this.quantity;
+        } else {
+            this.total = ((this.height * this.width) * this.quantity) * this.price;
+        }
     }
 }

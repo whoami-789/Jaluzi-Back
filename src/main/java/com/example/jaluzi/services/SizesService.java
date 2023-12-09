@@ -107,30 +107,6 @@ public class SizesService {
         return orderRepository.findById(id).orElse(null);
     }
 
-//    @Transactional
-//    public void deleteSizes(Long id) {
-//        try {
-//            // Получаем размер для получения связанного заказа
-//            Optional<Sizes> sizeOptional = sizesRepository.findById(id);
-//
-//            sizeOptional.ifPresent(size -> {
-//                // Получаем связанный заказ
-//                Order order = size.getOrder();
-//
-//                // Удаляем размер
-//                sizesRepository.deleteById(id);
-//
-//                // Пересчитываем итоговую стоимость заказа
-//                recalculateOrderTotal(order.getId());
-//
-//                // Обновляем заказ в репозитории
-//                orderRepository.save(order);
-//            });
-//        } catch (Exception e) {
-//            // Обработка ошибок, если необходимо
-//            e.printStackTrace();
-//        }
-//    }
 
     public void deleteSizes(Long id, Order orderId) {
         sizesRepository.deleteById(id);

@@ -37,4 +37,12 @@ public class Order {
     private void init() {
         date = LocalDate.now();
     }
+
+    public double calculateTotalSquare() {
+        double totalSquare = 0.0;
+        for (Sizes size : sizes) {
+            totalSquare += size.getSquare();
+        }
+        return totalSquare;
+    }
 }

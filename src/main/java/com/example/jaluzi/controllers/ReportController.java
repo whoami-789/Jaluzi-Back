@@ -31,7 +31,7 @@ public class ReportController {
     @GetMapping("/monthly-report")
     public ResponseEntity<Resource> generateMonthlyReport() {
         try {
-            String folderPath = "src/main/resources/reports/monthly/";
+            String folderPath = "/home/reports/month/";
             List<Order> allOrders = orderService.getAllOrders();
 
             // Создайте абсолютный путь к файлу отчета

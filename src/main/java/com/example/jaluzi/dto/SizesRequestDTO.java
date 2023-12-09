@@ -13,4 +13,5 @@ public class SizesRequestDTO {
     private double total;
     private String note;
     private double square;
+    private double totalSquare;
 }
